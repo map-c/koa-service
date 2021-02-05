@@ -5,7 +5,7 @@ import session from 'koa-session'
 import logger from 'koa-logger'
 import fileServe from 'koa-static'
 import path from 'path'
-import chalk from 'chalk'
+const chalk = require('chalk')
 import log from 'debug'
 
 const debug = log('my:app')
@@ -40,10 +40,6 @@ app.use(logger())
 
 // logger
 app.use(async (ctx, next) => {
-  console.log(ctx.session)
-  let n = 0
-  // ctx.session.views = n++
-  // console.log('views is', ctx.session.views)
   const start = new Date()
   await next()
   const ms = Date.now() - start.getTime()

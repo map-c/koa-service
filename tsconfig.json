@@ -1,20 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
     "strict": true,
-    "allowJs": false,
+    "allowJs": true,
     "sourceMap": true,
     "baseUrl": "./",
     "paths": {},
     "esModuleInterop": true,
-    "declaration": true,
-    "declarationDir": "./dist/typing"
+    "declaration": false,
+    "typeRoots": [
+      "./src/type"
+    ]
   },
   "include": [
-    "app.ts",
-    "./config",
-    "./db"
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
