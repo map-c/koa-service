@@ -5,5 +5,8 @@ interface Account {
 
 interface UserInfo {
   userName: string
+  password: string
   nickName: string
+  email: string
+  auth: string[]
 }

@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
-import session from 'koa-session'
+// import session from 'koa-session'
 import logger from 'koa-logger'
 import fileServe from 'koa-static'
 import path from 'path'
@@ -9,8 +9,6 @@ const chalk = require('chalk')
 import log from 'debug'
 
 const debug = log('my:app')
-
-debug('aaaa')
 
 import user from './route/user'
 
@@ -23,7 +21,7 @@ const app = new Koa()
 app.keys = ['I like coding']
 
 // 添加会话
-app.use(session(app))
+// app.use(session(app))
 
 // 解析 body
 app.use(
@@ -40,23 +38,28 @@ app.use(logger())
 
 // logger
 app.use(async (ctx, next) => {
+  debug('ctx is : %O', ctx)
   const start = new Date()
   await next()
   const ms = Date.now() - start.getTime()
   console.log(`${ctx.method} ${ctx.url} - ${ms} ms`)
 })
 
+// app.use(async ctx => {
+//   ctx.body = 'hahah'
+// })
+
 // 静态资源服务
-const filepath = path.resolve('public/dist')
-app.use(fileServe(filepath))
+// const filepath = path.resolve('public/dist')
+// app.use(fileServe(filepath))
 
 // router
 app.use(user.routes()).use(user.allowedMethods())
 
 // 404
-app.use(async ctx => {
-  ctx.body = ctx.session
-})
+// app.use(async ctx => {
+//   ctx.body = ctx.session
+// })
 
 // error-handling
 app.on('error', (err, ctx) => {

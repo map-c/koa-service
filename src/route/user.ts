@@ -1,6 +1,8 @@
-import Router, { RouterContext } from 'koa-router'
-import { CheckInput } from '../middleware/checkInput'
+import Router from 'koa-router'
 import User from '../controller/user'
+import debug from 'debug'
+
+const log = debug('my:router')
 
 const userInstance = new User()
 
@@ -8,12 +10,12 @@ const routerInsance = new Router({
   prefix: '/api/user'
 })
 
-const login = userInstance.login.bind(userInstance)
+const register = userInstance.register.bind(userInstance)
+routerInsance.get('/list', async (ctx, next) => {
+  log('cts is ::: %O', ctx)
+  ctx.body = '用户信息'
+})
 
-routerInsance.post('/register', login)
-
-// routerInsance.post('/register', async (ctx: RouterContext, next) => {
-//   await next()
-// })
+routerInsance.post('/register', register)
 
 export default routerInsance

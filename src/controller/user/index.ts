@@ -1,8 +1,9 @@
 import { valid } from '../../utils/validate'
 import { RouterContext } from 'koa-router'
 import { createUser, findUser } from './service'
-// import { Account } from '../../type/index'
+import { SuccessModel } from '../../utils/resModel'
 import debug from 'debug'
+import { Next } from 'koa'
 
 const log = debug('my:user')
 
@@ -44,11 +45,12 @@ export default class User {
       })
   }
 
-  async register(this: User, ctx: RouterContext) {
-    const data = ctx.request.body
+  async register(this: User, ctx: RouterContext, next: Next) {
+    const data = ctx.request.body as UserInfo
     const schema = {
       type: 'object',
-      propertice: {
+      required: ['userName', 'password'],
+      properties: {
         userName: {
           type: 'string'
         },
@@ -62,17 +64,19 @@ export default class User {
     }
     const state = this.validate(data, schema)
     if (!state.valid) {
-      log('注册信息有误：%O', state.errors)
+      // log('注册信息有误：%O', state.errors)
       ctx.throw(400, '客户端参数错误')
     }
-    createUser(data)
-      .then(res => {
-        if (res) {
-          ctx.body = '注册成功'
-        }
-      })
-      .catch(err => {
-        ctx.throw(500, '服务器错误')
-      })
+    log('ctx is %O', ctx)
+    const res = await createUser(data)
+
+    // log('存储成功：', res)
+    if (res) {
+      log('响应客户端 %O', ctx)
+      // log('响应客户端 %O', ctx.body)
+      const result = new SuccessModel(true, '注册成功')
+      log('res is %O', result)
+      ctx.body = result
+    }
   }
 }

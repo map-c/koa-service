@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { mongoseConf } from '../config/db'
 const chalk = require('chalk')
 
-const url = `mongodb://${mongoseConf.host}:${mongoseConf.port}/${mongoseConf.dbName}`
+const url = `mongodb://${mongoseConf.userName}:${mongoseConf.pwd}@${mongoseConf.host}:${mongoseConf.port}/${mongoseConf.dbName}`
 
 mongoose.connect(url, {
   useUnifiedTopology: true,
@@ -17,6 +17,5 @@ db.on(
 )
 
 db.once('open', () => {
-  // connected success
   console.log(chalk.green('database connected success'))
 })
