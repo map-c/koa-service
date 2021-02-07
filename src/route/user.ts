@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import User from '../controller/user'
+import User from '../controller/user/index'
 import debug from 'debug'
 
 const log = debug('my:router')

@@ -7,16 +7,16 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
+      "name": "启动程序",
+      "args": [
+        "${workspaceFolder}/src/app.ts"
       ],
-      "port": 9299,
-      "program": "${workspaceFolder}\\dist\\app.js",
-      "preLaunchTask": "npm: build",
-      "outFiles": [
-        "${workspaceFolder}/dist/**/*.js"
-      ]
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "protocol": "inspector"
     }
   ]
 }

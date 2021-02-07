@@ -8,6 +8,8 @@ import { Next } from 'koa'
 const log = debug('my:user')
 
 export default class User {
+  constructor() {}
+
   private validate(data: any, schema: any) {
     const validateFn = valid(schema)
     const state = validateFn(data)
@@ -18,7 +20,7 @@ export default class User {
   }
 
   async login(this: User, ctx: RouterContext) {
-    const data = ctx.request.body as Account
+    const data = ctx.request.body
     const schema = {
       type: 'object',
       propertice: {
@@ -46,7 +48,7 @@ export default class User {
   }
 
   async register(this: User, ctx: RouterContext, next: Next) {
-    const data = ctx.request.body as UserInfo
+    const data = ctx.request.body
     const schema = {
       type: 'object',
       required: ['userName', 'password'],
