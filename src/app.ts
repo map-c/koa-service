@@ -6,11 +6,12 @@ import logger from 'koa-logger'
 import fileServe from 'koa-static'
 import path from 'path'
 const chalk = require('chalk')
+import jwt from 'koa-jwt'
 import log from 'debug'
 
 const debug = log('my:app')
 
-import user from './route/user'
+import router from './route/index'
 
 // 链接数据库
 import './db/mongoose'
@@ -38,28 +39,35 @@ app.use(logger())
 
 // logger
 app.use(async (ctx, next) => {
-  debug('ctx is : %O', ctx)
   const start = new Date()
   await next()
   const ms = Date.now() - start.getTime()
   console.log(`${ctx.method} ${ctx.url} - ${ms} ms`)
 })
-
-// app.use(async ctx => {
-//   ctx.body = 'hahah'
+// app.use(function (ctx, next) {
+//   return next().catch(err => {
+//     if (401 === err.status) {
+//       ctx.status = 401
+//       ctx.body = 'Protected resource, use Authhorization header to get'
+//     } else {
+//       throw err
+//     }
+//   })
 // })
+
+// jwt
+// app.use(jwt({ secret: 'cola-code' }))
 
 // 静态资源服务
-// const filepath = path.resolve('public/dist')
-// app.use(fileServe(filepath))
+const filepath = path.resolve('public/dist')
+app.use(fileServe(filepath))
 
 // router
-app.use(user.routes()).use(user.allowedMethods())
-
+router(app)
 // 404
-// app.use(async ctx => {
-//   ctx.body = ctx.session
-// })
+app.use(async ctx => {
+  ctx.body = ctx.session
+})
 
 // error-handling
 app.on('error', (err, ctx) => {

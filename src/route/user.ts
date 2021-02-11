@@ -11,10 +11,15 @@ const routerInsance = new Router({
 })
 
 const register = userInstance.register.bind(userInstance)
-routerInsance.get('/list', async (ctx, next) => {
-  log('cts is ::: %O', ctx)
+
+routerInsance.get('/list', async ctx => {
+  log('ctx state is %O', ctx.state)
   ctx.body = '用户信息'
 })
+
+const login = userInstance.login.bind(userInstance)
+
+routerInsance.post('/login', login)
 
 routerInsance.post('/register', register)
 

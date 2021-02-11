@@ -4,6 +4,8 @@ import { createUser, findUser } from './service'
 import { SuccessModel } from '../../utils/resModel'
 import debug from 'debug'
 import { Next } from 'koa'
+// import { getTokens } from '../../utils/jwt'
+import { sign } from 'jsonwebtoken'
 
 const log = debug('my:user')
 
@@ -23,7 +25,7 @@ export default class User {
     const data = ctx.request.body
     const schema = {
       type: 'object',
-      propertice: {
+      properties: {
         userName: {
           type: 'string'
         },
@@ -38,13 +40,16 @@ export default class User {
       log('登录信息有误：%O', state.errors)
       ctx.throw(400, '客户端参数错误')
     }
-    findUser(data)
-      .then(res => {
-        ctx.body = '登录成功'
-      })
-      .catch(err => {
-        ctx.body = '密码错误'
-      })
+    const res = await findUser(data)
+    log('用户信息 %O', res)
+    if (res) {
+      const token = sign({ user: res }, 'cola-code', { expiresIn: '24h' })
+      const result = {
+        userName: res,
+        token: token
+      }
+      ctx.body = new SuccessModel(result, '登录成功')
+    }
   }
 
   async register(this: User, ctx: RouterContext, next: Next) {
@@ -66,18 +71,12 @@ export default class User {
     }
     const state = this.validate(data, schema)
     if (!state.valid) {
-      // log('注册信息有误：%O', state.errors)
       ctx.throw(400, '客户端参数错误')
     }
-    log('ctx is %O', ctx)
     const res = await createUser(data)
 
-    // log('存储成功：', res)
     if (res) {
-      log('响应客户端 %O', ctx)
-      // log('响应客户端 %O', ctx.body)
       const result = new SuccessModel(true, '注册成功')
-      log('res is %O', result)
       ctx.body = result
     }
   }
