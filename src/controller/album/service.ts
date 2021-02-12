@@ -25,6 +25,8 @@ export default class Album {
   }
 
   static create(userId: string, name: string): Promise<Document> {
+    log('userId is %s', userId)
+    log('name is %s', name)
     const instance = new albumModel({
       userId,
       name
@@ -35,6 +37,7 @@ export default class Album {
           log('存储数据出错了： %O', err)
           throw new Error('存储数据出错了')
         }
+        log('doc is %O', doc)
         resolve(doc)
       })
     })

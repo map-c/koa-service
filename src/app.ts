@@ -1,7 +1,6 @@
 import Koa, { Middleware } from 'koa'
 import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
-// import session from 'koa-session'
 import logger from 'koa-logger'
 import fileServe from 'koa-static'
 import path from 'path'
@@ -46,22 +45,17 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms} ms`)
 })
 
-// jwt
-// app.use(jwt({ secret: 'cola-code' }))
-
 // 静态资源服务
 const filepath = path.resolve('public/dist')
 app.use(fileServe(filepath))
 
-//
+// 前端模板处理
 const root: string = path.resolve(__dirname, 'views')
-console.log('roote is: ', root)
 const fn = views(root, { extension: 'pug' }) as Middleware
 app.use(fn)
 
 // router
 router(app)
-// 404
 
 // error-handling
 app.on('error', (err, ctx) => {

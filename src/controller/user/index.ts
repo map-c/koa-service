@@ -1,7 +1,7 @@
 import { valid } from '../../utils/validate'
 import { RouterContext } from 'koa-router'
 import { createUser, findUser } from './service'
-import { SuccessModel } from '../../utils/resModel'
+import { ErrorModel, SuccessModel } from '../../utils/resModel'
 import debug from 'debug'
 import { Next } from 'koa'
 // import { getTokens } from '../../utils/jwt'
@@ -23,6 +23,7 @@ export default class User {
 
   async login(this: User, ctx: RouterContext) {
     const data = ctx.request.body
+    log('账户信息： %O', data)
     const schema = {
       type: 'object',
       properties: {
@@ -35,7 +36,7 @@ export default class User {
       }
     }
     const state = this.validate(data, schema)
-
+    console.log('state is', state)
     if (!state.valid) {
       log('登录信息有误：%O', state.errors)
       ctx.throw(400, '客户端参数错误')
@@ -43,12 +44,14 @@ export default class User {
     const res = await findUser(data)
     log('用户信息 %O', res)
     if (res) {
-      const token = sign({ user: res }, 'cola-code', { expiresIn: '24h' })
+      const token = sign({ ...res }, 'cola-code', { expiresIn: '24h' })
       const result = {
         userName: res,
         token: token
       }
       ctx.body = new SuccessModel(result, '登录成功')
+    } else {
+      ctx.body = new ErrorModel('密码错误')
     }
   }
 

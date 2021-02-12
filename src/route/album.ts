@@ -5,6 +5,7 @@ const albumRouter = new Router({
   prefix: '/api/service/album'
 })
 
-albumRouter.get('/list', Control.getAlbum).post('/', Control.create)
+albumRouter.get('/list', Control.getAlbum)
+albumRouter.post('/', Control.create)
 
 export default albumRouter

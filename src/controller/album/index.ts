@@ -1,15 +1,19 @@
 import { Next } from 'koa'
 import { RouterContext } from 'koa-router'
-import { SuccessModel } from 'src/utils/resModel'
+import { ErrorModel, SuccessModel } from '../../utils/resModel'
 import Serviec from './service'
 
 export default class Album {
   static async create(ctx: RouterContext, next: Next) {
-    const userId = ctx.state.user.userId
+    console.log(ctx.state)
+    const userId = ctx.state.user._id
+    console.log('user id', userId)
     const name = ctx.request.body.name
     const res = await Serviec.create(userId, name)
     if (res) {
       ctx.body = new SuccessModel(res, '')
+    } else {
+      ctx.body = new ErrorModel('出错了')
     }
   }
 
