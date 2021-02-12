@@ -1,10 +1,11 @@
-import Koa from 'koa'
+import Koa, { Middleware } from 'koa'
 import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
 // import session from 'koa-session'
 import logger from 'koa-logger'
 import fileServe from 'koa-static'
 import path from 'path'
+import views from 'koa-views'
 const chalk = require('chalk')
 import jwt from 'koa-jwt'
 import log from 'debug'
@@ -44,16 +45,6 @@ app.use(async (ctx, next) => {
   const ms = Date.now() - start.getTime()
   console.log(`${ctx.method} ${ctx.url} - ${ms} ms`)
 })
-// app.use(function (ctx, next) {
-//   return next().catch(err => {
-//     if (401 === err.status) {
-//       ctx.status = 401
-//       ctx.body = 'Protected resource, use Authhorization header to get'
-//     } else {
-//       throw err
-//     }
-//   })
-// })
 
 // jwt
 // app.use(jwt({ secret: 'cola-code' }))
@@ -62,12 +53,15 @@ app.use(async (ctx, next) => {
 const filepath = path.resolve('public/dist')
 app.use(fileServe(filepath))
 
+//
+const root: string = path.resolve(__dirname, 'views')
+console.log('roote is: ', root)
+const fn = views(root, { extension: 'pug' }) as Middleware
+app.use(fn)
+
 // router
 router(app)
 // 404
-app.use(async ctx => {
-  ctx.body = ctx.session
-})
 
 // error-handling
 app.on('error', (err, ctx) => {

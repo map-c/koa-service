@@ -15,7 +15,7 @@ photoRouter
     await next()
   })
   .post(
-    '/photo',
+    '/',
     upload.single('file'),
     async (ctx: any, next: Next) => {
       log('filename %O', ctx.file as any)

@@ -23,7 +23,9 @@
     "koa-router": "^10.0.0",
     "koa-session": "^6.1.0",
     "koa-static": "^5.0.0",
-    "mongoose": "^5.11.14"
+    "koa-views": "^7.0.0",
+    "mongoose": "^5.11.14",
+    "pug": "^3.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
