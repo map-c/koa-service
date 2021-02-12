@@ -12,8 +12,7 @@ const routerInsance = new Router({
 
 const register = userInstance.register.bind(userInstance)
 
-routerInsance.get('/list', async ctx => {
-  log('ctx state is %O', ctx.state)
+routerInsance.get('/test', async ctx => {
   ctx.body = '用户信息'
 })
 
