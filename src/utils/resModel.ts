@@ -1,10 +1,10 @@
 class SuccessModel {
   result: boolean = true
   data: object
-  message: string
-  constructor(data: any, message: string) {
+  message: string = ''
+  constructor(data: any, message?: string) {
     this.data = data
-    this.message = message
+    message ? (this.message = message) : ''
     this.result = true
   }
 }

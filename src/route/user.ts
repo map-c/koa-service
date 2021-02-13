@@ -13,8 +13,7 @@ const routerInsance = new Router({
 const register = userInstance.register.bind(userInstance)
 
 routerInsance.get('/test', async ctx => {
-  log('当前登录的用户 %O', ctx.state.user)
-  ctx.body = '用户信息'
+  ctx.body = ctx.state.user
 })
 
 const login = userInstance.login.bind(userInstance)

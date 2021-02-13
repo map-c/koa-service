@@ -7,8 +7,12 @@ const log = debug('my:album')
 export default class Album {
   static getAlbumList(pageNumber: number, skip: number) {
     return new Promise<Document[]>((resolve, reject) => {
-      albumModel.find().skip(skip).limit(pageNumber)
-      albumModel.count((err, count) => {})
+      albumModel.find((err, doc) => {
+        if (err) {
+          throw new Error('过去相册数据出错了')
+        }
+        resolve(doc)
+      })
     })
   }
 
@@ -24,7 +28,7 @@ export default class Album {
     })
   }
 
-  static create(userId: string, name: string): Promise<Document> {
+  static create(userId: string, name: string): Promise<boolean> {
     log('userId is %s', userId)
     log('name is %s', name)
     const instance = new albumModel({
@@ -38,7 +42,7 @@ export default class Album {
           throw new Error('存储数据出错了')
         }
         log('doc is %O', doc)
-        resolve(doc)
+        resolve(true)
       })
     })
   }
@@ -64,9 +68,25 @@ export default class Album {
     })
   }
 
-  static delete(id: string): Promise<boolean> {
+  /**
+   *
+   * @param id 相册 id
+   * @param userId 用户 id
+   */
+  static delete(id: string, userId: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      resolve(true)
+      // TODO: 判断当前用户或管理员
+      albumModel.remove(
+        {
+          _id: id
+        },
+        err => {
+          if (err) {
+            throw new Error('删除相册出错了')
+          }
+          resolve(true)
+        }
+      )
     })
   }
 }

@@ -60,7 +60,7 @@ router(app)
 // error-handling
 app.on('error', (err, ctx) => {
   console.log(chalk.red(`error info ${err}`))
-  console.error('server error', err, ctx)
+  console.error('server error', err)
 })
 
 app.listen(9527, () => {

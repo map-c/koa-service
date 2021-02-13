@@ -4,14 +4,18 @@ import { createUser, findUser } from './service'
 import { ErrorModel, SuccessModel } from '../../utils/resModel'
 import debug from 'debug'
 import { Next } from 'koa'
-// import { getTokens } from '../../utils/jwt'
 import { sign } from 'jsonwebtoken'
+import { SECRET } from '../../config/constant'
 
 const log = debug('my:user')
 
 export default class User {
   constructor() {}
-
+  /**
+   * 校验接口数据
+   * @param data 待检测的数据
+   * @param schema 数据的校验规则
+   */
   private validate(data: any, schema: any) {
     const validateFn = valid(schema)
     const state = validateFn(data)
@@ -21,32 +25,48 @@ export default class User {
     }
   }
 
+  /**
+   * 用户登录
+   * @param this
+   * @param ctx
+   */
   async login(this: User, ctx: RouterContext) {
     const data = ctx.request.body
-    log('账户信息： %O', data)
+    log('用户名称： %s', data.userName)
+    log('密码： %s', data.password)
     const schema = {
       type: 'object',
+      required: ['userName', 'password'],
       properties: {
         userName: {
-          type: 'string'
+          type: 'string',
+          minLength: 6
         },
         password: {
-          type: 'string'
+          type: 'string',
+          minLength: 6
         }
       }
     }
     const state = this.validate(data, schema)
-    console.log('state is', state)
+    log('参数校验结果：%O', state)
     if (!state.valid) {
-      log('登录信息有误：%O', state.errors)
+      log('登录信息有误：%O', state.errors) // 处理错误数据结构并输出到前端
       ctx.throw(400, '客户端参数错误')
     }
     const res = await findUser(data)
-    log('用户信息 %O', res)
+    log('用户信息： %O', res)
     if (res) {
-      const token = sign({ ...res }, 'cola-code', { expiresIn: '24h' })
+      const info = {
+        userName: (res as any).userName,
+        userId: (res as any)._id,
+        nickName: (res as any).nickName,
+        auth: (res as any).auth
+      }
+      const token = sign(info, SECRET, { expiresIn: '24h' })
+
       const result = {
-        userName: res,
+        userName: info.userName,
         token: token
       }
       ctx.body = new SuccessModel(result, '登录成功')
@@ -59,25 +79,33 @@ export default class User {
     const data = ctx.request.body
     const schema = {
       type: 'object',
-      required: ['userName', 'password'],
+      required: ['userName', 'password', 'email'],
       properties: {
         userName: {
-          type: 'string'
+          type: 'string',
+          minLength: 6
         },
         password: {
-          type: 'string'
+          type: 'string',
+          minLength: 6
         },
         email: {
-          type: 'string'
+          type: 'string',
+          format: 'email'
         }
       }
     }
-    const state = this.validate(data, schema)
+    const param = {
+      userName: data.userName,
+      password: data.password,
+      email: data.email
+    }
+    const state = this.validate(param, schema)
     if (!state.valid) {
       ctx.throw(400, '客户端参数错误')
     }
-    const res = await createUser(data)
-
+    const res = await createUser(param)
+    log('存储结果：%O', res)
     if (res) {
       const result = new SuccessModel(true, '注册成功')
       ctx.body = result
