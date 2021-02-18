@@ -24,6 +24,4 @@ const fn = multer({
   limits
 })
 
-console.log(fn)
-
 export default fn

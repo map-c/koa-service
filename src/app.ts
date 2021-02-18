@@ -6,8 +6,8 @@ import fileServe from 'koa-static'
 import path from 'path'
 import views from 'koa-views'
 const chalk = require('chalk')
-import jwt from 'koa-jwt'
 import log from 'debug'
+import cors from 'koa-cors'
 
 const debug = log('my:app')
 
@@ -23,6 +23,8 @@ app.keys = ['I like coding']
 
 // 添加会话
 // app.use(session(app))
+
+app.use(cors())
 
 // 解析 body
 app.use(

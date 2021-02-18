@@ -13,7 +13,7 @@ const routerInsance = new Router({
 const register = userInstance.register.bind(userInstance)
 
 routerInsance.get('/test', async ctx => {
-  ctx.body = ctx.state.user
+  ctx.body = ctx.state.user || 'test aaa'
 })
 
 const login = userInstance.login.bind(userInstance)
