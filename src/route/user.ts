@@ -13,7 +13,8 @@ const routerInsance = new Router({
 const register = userInstance.register.bind(userInstance)
 
 routerInsance.get('/test', async ctx => {
-  ctx.body = ctx.state.user || 'test aaa'
+  log('test is %O', ctx.request.headers)
+  ctx.body = ctx.state.user || '用户未登录'
 })
 
 const login = userInstance.login.bind(userInstance)

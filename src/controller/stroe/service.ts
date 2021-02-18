@@ -16,7 +16,8 @@ export default class Service {
     const promis = new Promise((resolve, reject) => {
       instance.save((err, doc) => {
         if (err) {
-          reject(err)
+          console.log(err)
+          throw new Error('新增店铺出错误')
         }
         resolve(doc)
       })
@@ -28,7 +29,8 @@ export default class Service {
     return new Promise((resolve, reject) => {
       storeModel.findByIdAndUpdate(id, params, null, (err, doc) => {
         if (err) {
-          reject(err)
+          console.log(err)
+          throw new Error('更新店铺信息出错')
         }
         resolve(doc)
       })

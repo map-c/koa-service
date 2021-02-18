@@ -6,25 +6,31 @@ import fileServe from 'koa-static'
 import path from 'path'
 import views from 'koa-views'
 const chalk = require('chalk')
-import log from 'debug'
 import cors from 'koa-cors'
-
-const debug = log('my:app')
-
 import router from './route/index'
 
 // 链接数据库
 import './db/mongoose'
 
 const app = new Koa()
+app.use(cors({ origin: '*' }))
+
+app.use(async (ctx, next) => {
+  return next().catch(err => {
+    console.log(err)
+    console.log(ctx.request.method)
+    if (err.status === 401) {
+      ctx.status = 401
+      ctx.body = '未登录'
+    }
+  })
+})
 
 // cookie 签名
 app.keys = ['I like coding']
 
 // 添加会话
 // app.use(session(app))
-
-app.use(cors())
 
 // 解析 body
 app.use(
@@ -52,9 +58,9 @@ const filepath = path.resolve('public/dist')
 app.use(fileServe(filepath))
 
 // 前端模板处理
-const root: string = path.resolve(__dirname, 'views')
-const fn = views(root, { extension: 'pug' }) as Middleware
-app.use(fn)
+// const root: string = path.resolve(__dirname, 'views')
+// const fn = views(root, { extension: 'pug' }) as Middleware
+// app.use(fn)
 
 // router
 router(app)
@@ -62,9 +68,10 @@ router(app)
 // error-handling
 app.on('error', (err, ctx) => {
   console.log(chalk.red(`error info ${err}`))
-  console.error('server error', err)
+  // console.error('server error', err)
 })
 
 app.listen(9527, () => {
-  console.log('server is running')
+  const info = chalk.green('Server running at http://localhost:95237')
+  console.log(info)
 })

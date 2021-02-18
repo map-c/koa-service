@@ -1,6 +1,9 @@
 import Service, { StoreInfo } from './service'
 import { RouterContext } from 'koa-router'
-import { SuccessModel } from 'src/utils/resModel'
+import { SuccessModel } from '../../utils/resModel'
+import debug from 'debug'
+
+const log = debug('my:store')
 
 export default class Store {
   /**
@@ -9,10 +12,13 @@ export default class Store {
    */
   static async createStore(ctx: RouterContext) {
     const userId = ctx.state.user.userId
+    log('user id is %s', userId)
     const params = (ctx.request.body as unknown) as StoreInfo
     params.userId = userId
+    console.log(params)
     // TODO: 入参校验
     const res = await Service.createStore(params)
+    console.log(res)
     if (res) {
       ctx.body = new SuccessModel(res)
     }

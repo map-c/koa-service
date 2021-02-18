@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const StoreSchema = new mongoose.Schema({
-  stroeName: {
+  storeName: {
     type: String,
     required: true
   },
@@ -10,16 +10,13 @@ const StoreSchema = new mongoose.Schema({
     required: true
   },
   address: {
-    type: String,
-    required: true
+    type: String
   },
   phone: {
-    type: String,
-    required: true
+    type: String
   },
   bankCard: {
-    type: String,
-    required: true
+    type: String
   },
   remark: {
     type: String
