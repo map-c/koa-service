@@ -15,6 +15,9 @@ const userschema = new Mongoose.Schema({
   email: {
     type: String
   },
+  phone: {
+    type: String
+  },
   auth: {
     type: Array
   },
