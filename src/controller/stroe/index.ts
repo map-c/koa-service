@@ -12,13 +12,10 @@ export default class Store {
    */
   static async createStore(ctx: RouterContext) {
     const userId = ctx.state.user.userId
-    log('user id is %s', userId)
     const params = (ctx.request.body as unknown) as StoreInfo
     params.userId = userId
-    console.log(params)
     // TODO: 入参校验
     const res = await Service.createStore(params)
-    console.log(res)
     if (res) {
       ctx.body = new SuccessModel(res)
     }

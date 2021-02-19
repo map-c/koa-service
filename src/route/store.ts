@@ -5,7 +5,7 @@ const instance = new Router({
   prefix: '/api/store'
 })
 
-instance.get('/:id', Control.getStoreByUserId)
+instance.get('/', Control.getStoreByUserId)
 instance.post('/create', Control.createStore)
 instance.put('/update', Control.updateStore)
 
