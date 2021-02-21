@@ -1,4 +1,3 @@
-import { CallbackError } from 'mongoose'
 import storeModel from './model'
 
 export interface StoreInfo {
@@ -50,6 +49,33 @@ export default class Service {
           resolve(doc)
         }
       )
+    })
+  }
+
+  static getStoreByName(name: string) {
+    return new Promise<StoreInfo[]>((resolve, reject) => {
+      storeModel.find(
+        { storeName: name },
+        'storeName',
+        null,
+        (err: unknown, docMap: any) => {
+          if (err) {
+            throw new Error('错错了')
+          }
+          resolve(docMap)
+        }
+      )
+    })
+  }
+
+  static removeStore() {
+    return new Promise<boolean>((resolve, reject) => {
+      storeModel.remove((err: any) => {
+        if (err) {
+          throw new Error('删除出错了')
+        }
+        resolve(true)
+      })
     })
   }
 }
