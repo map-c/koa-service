@@ -7,7 +7,7 @@ const ProductSchema = new mongoose.Schema({
     required: true
   },
   storeId: {
-    type: mongoose.SchemaTypes.ObjectId,
+    type: String,
     required: true
   },
   order: {

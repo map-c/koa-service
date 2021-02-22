@@ -31,7 +31,6 @@ test.before(async () => {
 
 test.serial('新增店铺', async t => {
   const res = await StoreModel.createStore(storeInfo)
-  console.log('res is', res)
   t.true('storeName' in (res as any))
 })
 

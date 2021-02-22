@@ -7,22 +7,25 @@ export interface ProductInfo {
   order: number
   price: number
   photo: string[]
+  storeId?: string
+  _id?: string
 }
 
 /**
- * 新增商品
+ * 新增商品;返回新增至数据库的信息
  * @param params
+ * @returns production
  */
 export function addProduct(params: ProductInfo) {
   log('新增商品: %O', params)
   const instance = new Model(params)
-  const promise = new Promise((resolve, reject) => {
-    instance.save(err => {
+  const promise = new Promise<ProductInfo>((resolve, reject) => {
+    instance.save((err, doc) => {
       if (err) {
         console.log(err)
         throw new Error('存储数据出错')
       }
-      resolve(true)
+      resolve((doc as unknown) as ProductInfo)
     })
   })
   return promise
@@ -35,12 +38,14 @@ export function addProduct(params: ProductInfo) {
 export async function getProductByStoreId(id: string) {
   try {
     const res = await Model.find({ storeId: id })
-    return res
+    return (res as unknown) as ProductInfo[]
   } catch (err) {
     console.log(err)
     throw new Error('获取列表数据')
   }
 }
+
+export async function getProduct() {}
 
 /**
  *
@@ -48,21 +53,24 @@ export async function getProductByStoreId(id: string) {
  * @param newInfo 需要更新的数据
  */
 export async function updateProduct(id: string, newInfo: any) {
-  try {
-    const res = await Model.findByIdAndUpdate(id, newInfo, null)
-    if (res) {
-      return res
-    }
-  } catch (err) {
-    console.log(err)
-    throw new Error('查询出错了')
-  }
+  return new Promise<ProductInfo>((resolve, reject) => {
+    Model.update({ _id: id }, newInfo, null, (err, doc: any) => {
+      if (err) {
+        console.log(err)
+        throw new Error('查询出错了')
+      }
+      console.log('res  is ::', doc)
+      if (doc) {
+        resolve((doc as unknown) as ProductInfo)
+      }
+    })
+  })
 }
 
 export async function removeById(id: string) {
   try {
     const res = await Model.remove({ _id: id })
-    return res
+    return (res as any).deletedCount === 1
   } catch (err) {
     console.log(err)
     throw new Error('')
