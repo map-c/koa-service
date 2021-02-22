@@ -7,29 +7,35 @@ const log = debug('my:db')
 interface UserInfo {
   userName: string
   password: string
+  nickName: string
+  email: string
+  phone: string
+  auth: string[]
+  createTime?: number
+  _id?: string
 }
 
 export function createUser(data: UserInfo) {
-  return new Promise<boolean>((resolve, reject) => {
+  return new Promise<UserInfo>((resolve, reject) => {
     const instance = new UserModel(data)
     instance.save((err: CallbackError, doc: Document) => {
       if (err) {
         log('存储数据错误', err)
         reject(false)
       } else {
-        resolve(true)
+        resolve((doc as unknown) as UserInfo)
       }
     })
   })
 }
 
 export function findUser(data: UserInfo) {
-  return new Promise<Document>((resolve, reject) => {
+  return new Promise<UserInfo>((resolve, reject) => {
     UserModel.findOne(data, (err: CallbackError, doc: Document) => {
       if (err) {
         reject(err)
       } else {
-        resolve(doc)
+        resolve((doc as unknown) as UserInfo)
       }
     })
   })
