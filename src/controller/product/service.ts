@@ -59,7 +59,6 @@ export async function updateProduct(id: string, newInfo: any) {
         console.log(err)
         throw new Error('查询出错了')
       }
-      console.log('res  is ::', doc)
       if (doc) {
         resolve((doc as unknown) as ProductInfo)
       }

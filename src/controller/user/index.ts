@@ -98,7 +98,10 @@ export default class User {
     const param = {
       userName: data.userName,
       password: data.password,
-      email: data.email
+      email: data.email,
+      nickName: data.nickName,
+      phone: data.phone,
+      auth: []
     }
     const state = this.validate(param, schema)
     if (!state.valid) {

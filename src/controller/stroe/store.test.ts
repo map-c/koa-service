@@ -19,7 +19,6 @@ const mongod = new MongoMemoryServer()
 
 test.before(async () => {
   const uri = await mongod.getUri()
-  console.log('uri is', uri)
   await mongoose.connect(uri, {
     useUnifiedTopology: true,
     useNewUrlParser: true

@@ -54,9 +54,7 @@ test.serial('获取商品总数', async t => {
 })
 
 test.serial('更新商品数据', async t => {
-  console.log('id is', id)
   const res = await updateProduct(id, { $set: { name: 'cola' } })
-  console.log('res is', res)
   if (res && (res as any).ok === 1) {
     t.pass()
   } else {
