@@ -1,6 +1,6 @@
 import test from 'ava'
 import request from 'supertest'
-import '../app'
+// import '../app'
 
 test('demo is', t => {
   t.pass()

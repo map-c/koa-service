@@ -1,4 +1,5 @@
 import Mongoose from 'mongoose'
+import User from '.'
 
 const userschema = new Mongoose.Schema({
   userName: {
@@ -25,6 +26,13 @@ const userschema = new Mongoose.Schema({
     type: Date,
     default: Date.now
   }
+})
+
+// 保存 hook
+userschema.pre('save', next => {
+  console.log('保存数据前执行的操作')
+  console.log('this', this)
+  next()
 })
 
 const UserModel = Mongoose.model('Users', userschema)
