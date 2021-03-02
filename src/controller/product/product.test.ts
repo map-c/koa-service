@@ -1,4 +1,3 @@
-import { MongoMemoryServer } from 'mongodb-memory-server'
 import test from 'ava'
 import mongoose from 'mongoose'
 mongoose.Promise = require('bluebird')
@@ -10,6 +9,7 @@ import {
   removeById,
   updateProduct
 } from './service'
+import { connectMongodb, stopMongodb } from '../../utils/mongd'
 
 const productMap: ProductInfo = {
   name: 'phone',
@@ -21,18 +21,7 @@ const productMap: ProductInfo = {
 
 let id = ''
 
-const mongod = new MongoMemoryServer()
-
-test.before(async () => {
-  const url = await mongod.getUri()
-  await mongoose.connect(url, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-  })
-  mongoose.connection.on('open', () => {
-    console.log('链接成功')
-  })
-})
+test.before(connectMongodb)
 
 test.serial('新增产品', async t => {
   const res = await addProduct(productMap)
@@ -67,6 +56,4 @@ test.serial('删除数据', async t => {
   t.true(res)
 })
 
-test.after(async () => {
-  await mongod.stop()
-})
+test.after(stopMongodb)

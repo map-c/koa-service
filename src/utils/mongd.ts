@@ -1,6 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 const mongod = new MongoMemoryServer()
+mongoose.set('debug', true)
 
 export async function connectMongodb() {
   await mongod.start()

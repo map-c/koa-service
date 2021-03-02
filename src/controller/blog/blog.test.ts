@@ -1,11 +1,9 @@
 import test from 'ava'
 import mongoose from 'mongoose'
-import { MongoMemoryServer } from 'mongodb-memory-server'
 import { addBlog } from './service'
 import { BlogType } from './model'
+import { connectMongodb, stopMongodb } from '../../utils/mongd'
 mongoose.Promise = require('bluebird')
-
-const mongod = new MongoMemoryServer()
 
 const blogInfo: BlogType = {
   authorId: '100',
@@ -15,13 +13,7 @@ const blogInfo: BlogType = {
   tabs: ['ts']
 }
 
-test.before(async () => {
-  const uri = await mongod.getUri()
-  await mongoose.connect(uri, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-  })
-})
+test.before(connectMongodb)
 
 test.serial('新增博客', async t => {
   const res = await addBlog(blogInfo)
@@ -36,6 +28,4 @@ test('测试', t => {
   t.pass('ceshi')
 })
 
-test.after(async () => {
-  await mongod.stop()
-})
+test.after(stopMongodb)

@@ -1,9 +1,9 @@
-import { MongoMemoryServer } from 'mongodb-memory-server'
 import test from 'ava'
 import mongoose from 'mongoose'
 mongoose.Promise = require('bluebird')
 
 import StoreModel from './service'
+import { connectMongodb, stopMongodb } from '../../utils/mongd'
 
 const storeInfo = {
   storeName: 'colaStore',
@@ -17,18 +17,8 @@ const storeInfo = {
 console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
 // 启动 mongoDB 实例
-const mongod = new MongoMemoryServer()
 
-test.before(async () => {
-  const uri = await mongod.getUri()
-  await mongoose.connect(uri, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-  })
-  mongoose.connection.on('open', () => {
-    console.log('链接成功')
-  })
-})
+test.before(connectMongodb)
 
 test.serial('新增店铺', async t => {
   const res = await StoreModel.createStore(storeInfo)
@@ -45,6 +35,4 @@ test.serial('删除店铺', async t => {
   t.true(res)
 })
 
-test.after(async () => {
-  await mongod.stop()
-})
+test.after(stopMongodb)
