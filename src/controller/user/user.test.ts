@@ -1,7 +1,7 @@
 import test from 'ava'
 import mongoose from 'mongoose'
 mongoose.Promise = require('bluebird')
-import { getUri } from '../../utils/mongd'
+import { getUri, stop } from '../../utils/mongd'
 import { createUser, deleteUser } from './service'
 
 const user = {
@@ -35,4 +35,8 @@ test.serial('新增用户', async t => {
 test.serial('删除用户', async t => {
   const res = await deleteUser(id)
   t.true(res)
+})
+
+test.after(async () => {
+  await stop()
 })

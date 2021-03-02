@@ -66,3 +66,7 @@ test.serial('删除数据', async t => {
   const res = await removeById(id)
   t.true(res)
 })
+
+test.after(async () => {
+  await mongod.stop()
+})

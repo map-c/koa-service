@@ -14,6 +14,8 @@ const storeInfo = {
   remaek: '备注'
 }
 
+console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
 // 启动 mongoDB 实例
 const mongod = new MongoMemoryServer()
 
@@ -41,4 +43,8 @@ test.serial('查询店铺', async t => {
 test.serial('删除店铺', async t => {
   const res = await StoreModel.removeStore()
   t.true(res)
+})
+
+test.after(async () => {
+  await mongod.stop()
 })
