@@ -26,7 +26,7 @@ test.before(async () => {
 test.serial('新增博客', async t => {
   const res = await addBlog(blogInfo)
   console.log('res is', res)
-  t.true(typeof res.createTime === 'number')
+  t.is(typeof res.createTime, 'object')
 })
 
 test('错误', t => {

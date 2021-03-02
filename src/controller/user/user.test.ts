@@ -1,7 +1,7 @@
 import test from 'ava'
 import mongoose from 'mongoose'
 mongoose.Promise = require('bluebird')
-import { getUri, stop } from '../../utils/mongd'
+import { connectMongodb, stopMongodb } from '../../utils/mongd'
 import { createUser, deleteUser } from './service'
 
 const user = {
@@ -16,13 +16,7 @@ const user = {
 
 let id = ''
 
-test.before(async () => {
-  const uri = await getUri()
-  await mongoose.connect(uri, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-  })
-})
+test.before(connectMongodb)
 
 test.serial('新增用户', async t => {
   const res = await createUser(user)
@@ -37,6 +31,4 @@ test.serial('删除用户', async t => {
   t.true(res)
 })
 
-test.after(async () => {
-  await stop()
-})
+test.after(stopMongodb)
