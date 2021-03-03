@@ -16,14 +16,18 @@ export async function addBlog(blogInfo: BlogType) {
   return promise
 }
 
-export async function updateBlog(id: string, updateInfo: any) {
-  try {
-    const res = await blogModel.findByIdAndUpdate(id, updateInfo)
-    return res
-  } catch (err) {
-    console.error(err)
-    throw new Error('更新博客失败')
-  }
+export function updateBlog(id: string, updateInfo: any) {
+  const promise = new Promise<BlogType>((resolve, reject) => {
+    blogModel.updateOne({ _id: id }, updateInfo, null, (err, doc) => {
+      if (err) {
+        console.error(err)
+        throw new Error('更新博客失败')
+      }
+      console.log('更新结果', doc)
+      resolve((doc as unknown) as BlogType)
+    })
+  })
+  return promise
 }
 
 export async function deleteBlog(id: string) {
