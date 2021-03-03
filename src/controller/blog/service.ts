@@ -35,6 +35,20 @@ export async function deleteBlog(id: string) {
   }
 }
 
-export function findblog(query: any) {
-  return blogModel.find(query)
+export function findblog(query: any, skip: number, limit: number) {
+  const promise = new Promise<BlogType[]>((resolve, reject) => {
+    blogModel.find(
+      query,
+      { title: 1, authorName: 1, _id: 0 },
+      { skip: skip, limit: limit },
+      (err, doc) => {
+        if (err) {
+          console.error(err)
+          throw new Error('查询博客出错了')
+        }
+        resolve((doc as unknown) as BlogType[])
+      }
+    )
+  })
+  return promise
 }

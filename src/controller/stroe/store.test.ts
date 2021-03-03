@@ -14,8 +14,6 @@ const storeInfo = {
   remaek: '备注'
 }
 
-console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-
 // 启动 mongoDB 实例
 
 test.before(connectMongodb)
