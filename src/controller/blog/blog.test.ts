@@ -30,10 +30,10 @@ test.serial('blog find', async t => {
 
 test.serial('blog update', async t => {
   const res = await updateBlog(id, { title: '文章标题1' })
-  t.truthy(res)
+  t.is(res.n, 1)
+  t.is(res.ok, 1)
 
   const query = await findblog({ _id: id }, 0, 10)
-  console.log(query)
   t.is(query[0].title, '文章标题1')
 })
 
