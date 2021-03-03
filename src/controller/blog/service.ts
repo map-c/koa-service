@@ -29,7 +29,6 @@ export function updateBlog(id: string, updateInfo: any) {
         console.error(err)
         throw new Error('更新博客失败')
       }
-      console.log('更新结果', doc)
       resolve((doc as unknown) as UpdateRes)
     })
   })

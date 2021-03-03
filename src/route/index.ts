@@ -7,6 +7,7 @@ import albumRouter from './album'
 import { SECRET } from '../config/constant'
 import storeRouter from './store'
 import productRouter from './production'
+import blogRouter from './blog'
 import debug from 'debug'
 
 const log = debug('auth')
@@ -23,4 +24,5 @@ export default function (app: Application) {
   app.use(albumRouter.routes()).use(albumRouter.allowedMethods())
   app.use(storeRouter.routes()).use(storeRouter.allowedMethods())
   app.use(productRouter.routes()).use(productRouter.allowedMethods())
+  app.use(blogRouter.routes()).use(blogRouter.allowedMethods())
 }
