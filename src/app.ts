@@ -1,10 +1,10 @@
-import Koa, { Middleware } from 'koa'
+import Koa from 'koa'
 import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
 import logger from 'koa-logger'
 import fileServe from 'koa-static'
 import path from 'path'
-import views from 'koa-views'
+// import views from 'koa-views'
 const chalk = require('chalk')
 import cors from 'koa-cors'
 import router from './route/index'
@@ -71,7 +71,8 @@ app.on('error', (err, ctx) => {
   // console.error('server error', err)
 })
 
-app.listen(9527, () => {
-  const info = chalk.green('Server running at http://localhost:95237')
-  console.log(info)
-})
+// app.listen(9527, () => {
+//   const info = chalk.green('Server running at http://localhost:95237')
+//   console.log(info)
+// })
+export default app

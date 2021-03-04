@@ -35,6 +35,19 @@ export function updateBlog(id: string, updateInfo: any) {
   return promise
 }
 
+export function updateById(id: string, info: any) {
+  const promise = new Promise((resolve, reject) => {
+    blogModel.findByIdAndUpdate(id, { $set: info }, null, (err, res) => {
+      if (err) {
+        throw new Error('更新出错了')
+      }
+      console.log('跟新结果', res)
+      resolve(res)
+    })
+  })
+  return promise
+}
+
 export async function deleteBlog(id: string) {
   try {
     const res = await blogModel.deleteOne({ _id: id })

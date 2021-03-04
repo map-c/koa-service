@@ -1,6 +1,6 @@
 import test from 'ava'
 import mongoose from 'mongoose'
-import { addBlog, updateBlog, findblog } from './service'
+import { addBlog, updateBlog, findblog, updateById } from './service'
 import { BlogType } from './model'
 import { connectMongodb, stopMongodb } from '../../utils/mongd'
 mongoose.Promise = require('bluebird')
@@ -35,6 +35,14 @@ test.serial('blog update', async t => {
 
   const query = await findblog({ _id: id }, 0, 10)
   t.is(query[0].title, '文章标题1')
+})
+
+test.serial('blog update by id', async t => {
+  const res = await updateById(id, { article: 'test' })
+  t.is((res as any).n, 1)
+
+  const query = await findblog({ _id: id }, 0, 10)
+  t.is(query[0].article, 'test')
 })
 
 test.after(stopMongodb)

@@ -1,7 +1,7 @@
 import { addBlog, findblog, updateBlog } from './service'
 import { RouterContext } from 'koa-router'
 import { Next } from 'koa'
-import { SuccessModel } from 'src/utils/resModel'
+import { SuccessModel } from '../../utils/resModel'
 
 export default class Blog {
   /**
