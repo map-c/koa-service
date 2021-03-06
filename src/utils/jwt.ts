@@ -175,7 +175,7 @@ export function parseHeader(ctx: RouterContext, type = 'access') {
     const token = parts[1]
 
     if (/^Bearer$/i.test(schema)) {
-      const obj = ctx.jwt.verifyToken(token, type)
+      const obj = (ctx as any).jwt.verifyToken(token, type)
       if (!obj.type || obj.type !== type) {
         ctx.throw(401, '权限已过期')
       }
