@@ -61,7 +61,7 @@ export function findblog(query: any, skip: number, limit: number) {
   const promise = new Promise<BlogType[]>((resolve, reject) => {
     blogModel.find(
       query,
-      { title: 1, authorName: 1, _id: 0 },
+      { title: 1, authorName: 1, createTime: 1 },
       { skip: skip, limit: limit },
       (err, doc) => {
         if (err) {
@@ -73,4 +73,15 @@ export function findblog(query: any, skip: number, limit: number) {
     )
   })
   return promise
+}
+
+export async function findBlogInfoById(id: string) {
+  const res = await blogModel.findById(id, { title: 1, article: 1 })
+  console.log(res)
+  return res
+}
+
+export async function findCount() {
+  const count = await blogModel.count()
+  return count
 }

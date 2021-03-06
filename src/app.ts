@@ -17,11 +17,11 @@ app.use(cors({ origin: '*' }))
 
 app.use(async (ctx, next) => {
   return next().catch(err => {
-    console.log(err)
-    console.log(ctx.request.method)
     if (err.status === 401) {
       ctx.status = 401
-      ctx.body = '未登录'
+      ctx.body = ''
+    } else {
+      throw err
     }
   })
 })

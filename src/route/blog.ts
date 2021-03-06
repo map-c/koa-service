@@ -6,7 +6,8 @@ const instance = new Router({
 })
 
 instance
-  .get('/', Contorller.findBlog)
+  .get('/public', Contorller.findBlog)
+  .get('/public/info/:id', Contorller.findBlogById)
   .post('/', Contorller.addBlog)
   .patch('/', Contorller.updateBlog)
 
