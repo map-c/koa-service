@@ -15,7 +15,7 @@ const log = debug('auth')
 export default function (app: Application) {
   // 路由权限设置 jwt
   const auth = jwt({ secret: SECRET }).unless({
-    path: [/^\/api\/.\/public./]
+    path: [/.*\/public.*/]
   })
   app.use(auth)
   app.use(html.routes()).use(html.allowedMethods())

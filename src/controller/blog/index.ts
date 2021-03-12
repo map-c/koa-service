@@ -21,7 +21,6 @@ export default class Blog {
     const blogInfo = ctx.request.body
     blogInfo.authorId = userId
     blogInfo.authorName = authorName
-    console.log('blogInfo is', blogInfo)
     // TODO 校验 blogInfo
     const res = await addBlog(blogInfo)
     if (res) {

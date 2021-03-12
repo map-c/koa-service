@@ -6,14 +6,15 @@ import fileServe from 'koa-static'
 import path from 'path'
 // import views from 'koa-views'
 const chalk = require('chalk')
-import cors from 'koa-cors'
+import cors from 'koa2-cors'
 import router from './route/index'
 
 // 链接数据库
 import './db/mongoose'
 
 const app = new Koa()
-app.use(cors({ origin: '*' }))
+
+app.use(cors({ origin: '*', credentials: true }))
 
 app.use(async (ctx, next) => {
   return next().catch(err => {
@@ -54,7 +55,7 @@ app.use(async (ctx, next) => {
 })
 
 // 静态资源服务
-const filepath = path.resolve('public/dist')
+const filepath = path.resolve(__dirname + '/public')
 app.use(fileServe(filepath))
 
 // 前端模板处理

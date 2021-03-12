@@ -1,7 +1,7 @@
 import multer from 'koa-multer'
 import path from 'path'
 
-const savePath = path.resolve(__dirname, '../../uploads')
+const savePath = path.resolve(__dirname, '../public/img')
 // console.log('savepath is', savePath)
 
 const storage = multer.diskStorage({

@@ -27,8 +27,7 @@ const BlogSchema = new mongoose.Schema({
   },
   tabs: [String],
   createTime: {
-    type: Date,
-    default: Date.now()
+    type: Date
   },
   updateTime: {
     type: Date

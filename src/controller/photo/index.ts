@@ -6,10 +6,18 @@ import debug from 'debug'
 const log = debug('my:photo')
 
 export default class Photo {
+  static async getList(ctx: RouterContext) {
+    const list = await Service.getList()
+    if (list) {
+      ctx.body = new SuccessModel(list)
+    }
+  }
+
   static async add(ctx: RouterContext) {
     const data = ctx.request.body
-    const fieldName = (ctx as any).field.fieldName
-    const url = `http://localhost:9527/uploads/${fieldName}`
+    console.log((ctx.req as any).file)
+    const fieldName = (ctx.req as any).file.filename
+    const url = `http://localhost:9527/img/${fieldName}`
     const userId = ctx.state.user.userId
     const param = {
       userId: userId,

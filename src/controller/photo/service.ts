@@ -9,7 +9,10 @@ interface PhototInfo {
 }
 
 export default class PhotoService {
-  static getList() {}
+  static async getList() {
+    const res = await photoModel.find()
+    return res
+  }
   /**
    * 新增 photo
    * @param param object
